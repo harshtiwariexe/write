@@ -12,7 +12,7 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { ChevronsLeftRightIcon } from "lucide-react";
 import React from "react";
 
-function UserItem() {
+export default function UserItem() {
   const { user } = useUser();
   return (
     <DropdownMenu>
@@ -79,5 +79,3 @@ function UserItem() {
     </DropdownMenu>
   );
 }
-
-export default UserItem;
