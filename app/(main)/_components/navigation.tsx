@@ -1,4 +1,10 @@
-import { ChevronsLeft, Menu, PlusCircle, Search, Settings } from "lucide-react";
+import {
+  ChevronsLeft,
+  Menu,
+  PlusCircle,
+  Search,
+  Settings2,
+} from "lucide-react";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
@@ -7,7 +13,7 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import UserItem from "./userItem";
 import Item from "./item";
-import DocumentList from "./document-list";
+import DocumentList from "./documentList";
 
 function Navigation() {
   const create = useMutation(api.documents.create);
@@ -84,7 +90,7 @@ function Navigation() {
         <div>
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={() => {}} />
-          <Item label="Settings" icon={Settings} onClick={() => {}} />
+          <Item label="Settings" icon={Settings2} onClick={() => {}} />
           <Item onClick={handleCreate} label="New Page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
