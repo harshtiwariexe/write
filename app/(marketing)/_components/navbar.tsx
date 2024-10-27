@@ -39,7 +39,7 @@ export default function Navbar() {
         {isAuthenticated && !isLoading && (
           <>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/document">Enter Write</Link>
+              <Link href="/documents">Enter Write</Link>
             </Button>
             <UserButton />
           </>

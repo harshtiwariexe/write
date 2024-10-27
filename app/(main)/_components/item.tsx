@@ -33,7 +33,7 @@ interface ItemProps {
   level?: number;
   onExpand?: () => void;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon: LucideIcon;
 }
 
@@ -83,7 +83,7 @@ export default function Item({
         if (!expanded) {
           onExpand?.();
         }
-        router.push(`/documents/${documentID}`);
+        // router.push(`/documents/${documentID}`);
       },
     );
     toast.promise(promise, {

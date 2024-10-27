@@ -1,9 +1,11 @@
 import {
   ChevronsLeft,
   MenuIcon,
+  Plus,
   PlusCircle,
   Search,
   Settings2,
+  Trash2,
 } from "lucide-react";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -15,6 +17,12 @@ import UserItem from "./userItem";
 import Item from "./item";
 import DocumentList from "./documentList";
 import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import TrashBox from "./trashBox";
 
 function Navigation() {
   const create = useMutation(api.documents.create);
@@ -141,6 +149,18 @@ function Navigation() {
         </div>
         <div className="mt-4">
           <DocumentList />
+          <Item onClick={handleCreate} icon={Plus} label="Add a Page" />
+          <Popover>
+            <PopoverTrigger className="w-full mt-4">
+              <Item label="Trash" icon={Trash2} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="p-0 w-72"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
         <div
           onMouseDown={handleMouseDown}
