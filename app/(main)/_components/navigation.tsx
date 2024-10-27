@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/popover";
 import TrashBox from "./trashBox";
 import { useSearch } from "@/hooks/searchbox";
+import { useSettings } from "@/hooks/use-setting";
 
 function Navigation() {
   const create = useMutation(api.documents.create);
@@ -35,6 +36,7 @@ function Navigation() {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const search = useSearch();
+  const settings = useSettings();
 
   const handleCreate = () => {
     const promise = create({ title: "Untitled" });
@@ -51,6 +53,7 @@ function Navigation() {
     } else {
       resetWidth();
     }
+    /* trunk-ignore(eslint/react-hooks/exhaustive-deps) */
   }, [isMobile]);
 
   useEffect(() => {
@@ -146,7 +149,7 @@ function Navigation() {
         <div>
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
-          <Item label="Settings" icon={Settings2} onClick={() => {}} />
+          <Item label="Settings" icon={Settings2} onClick={settings.onOpen} />
           <Item onClick={handleCreate} label="New Page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
