@@ -23,6 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import TrashBox from "./trashBox";
+import { useSearch } from "@/hooks/searchbox";
 
 function Navigation() {
   const create = useMutation(api.documents.create);
@@ -33,6 +34,7 @@ function Navigation() {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+  const search = useSearch();
 
   const handleCreate = () => {
     const promise = create({ title: "Untitled" });
@@ -143,7 +145,7 @@ function Navigation() {
         )}
         <div>
           <UserItem />
-          <Item label="Search" icon={Search} isSearch onClick={() => {}} />
+          <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
           <Item label="Settings" icon={Settings2} onClick={() => {}} />
           <Item onClick={handleCreate} label="New Page" icon={PlusCircle} />
         </div>
