@@ -25,10 +25,11 @@ import {
 import TrashBox from "./trashBox";
 import { useSearch } from "@/hooks/searchbox";
 import { useSettings } from "@/hooks/use-setting";
+import NavBar from "./navbar";
 
 function Navigation() {
   const create = useMutation(api.documents.create);
-  const pathName = usePathname();
+  const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -37,6 +38,8 @@ function Navigation() {
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const search = useSearch();
   const settings = useSettings();
+
+  const documentID = pathname.split("/").pop(); // This gets the last segment
 
   const handleCreate = () => {
     const promise = create({ title: "Untitled" });
@@ -60,7 +63,7 @@ function Navigation() {
     if (isMobile) {
       collapse();
     }
-  }, [isMobile, pathName]);
+  }, [isMobile, pathname]);
 
   const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -179,19 +182,22 @@ function Navigation() {
         className={cn(
           "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
           isResetting && "transition-all ease-in-out duration-300",
-          (isMobile || isCollapsed) && "left-0 w-full", // Adjust for mobile or collapsed state
+          (isMobile || isCollapsed) && "left-0 w-full",
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
-          {/* Show MenuIcon only when sidebar is collapsed */}
-          {(isMobile || isCollapsed) && (
-            <MenuIcon
-              role="button"
-              className="h-6 w-6 text-muted-foreground"
-              onClick={resetWidth}
-            />
-          )}
-        </nav>
+        {!!documentID ? (
+          <NavBar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+        ) : (
+          <nav className="py-2 px-3 bg-transparent w-full">
+            {isCollapsed && (
+              <MenuIcon
+                onClick={resetWidth}
+                role="button"
+                className="h-6 w-6 text-muted-foreground"
+              />
+            )}
+          </nav>
+        )}
       </div>
     </>
   );
