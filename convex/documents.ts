@@ -224,22 +224,26 @@ export const getSearch = query({
 export const getById = query({
   args: { documentId: v.id("documents") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-
     const document = await ctx.db.get(args.documentId);
 
+    // Check if the document exists
     if (!document) {
       throw new Error("Not Found");
     }
+
+    // Allow access if the document is published and not archived
     if (document.isPublished && !document.isArchived) {
       return document;
     }
+
+    // Authenticate the user
+    const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Not Authenticated");
     }
 
+    // Check if the authenticated user is authorized to access the document
     const userID = identity.subject;
-
     if (document.userID !== userID) {
       throw new Error("Not Authorized");
     }
