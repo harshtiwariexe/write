@@ -8,6 +8,7 @@ import { useCoverImage } from "@/hooks/use-cover-image";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import { useEdgeStore } from "@/lib/edgestore";
 
 interface CoverImageProp {
   url?: string;
@@ -18,8 +19,14 @@ interface CoverImageProp {
 export default function Cover({ url, preview, initData }: CoverImageProp) {
   const coverImage = useCoverImage();
   const removeImage = useMutation(api.documents.removeImage);
+  const { edgestore } = useEdgeStore();
 
-  const onRemoveImage = () => {
+  const onRemoveImage = async () => {
+    if (url) {
+      await edgestore.publicFiles.delete({
+        url: url,
+      });
+    }
     removeImage({ id: initData._id });
     coverImage.onClose();
   };
