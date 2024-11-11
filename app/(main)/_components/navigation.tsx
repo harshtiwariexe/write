@@ -8,7 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -38,11 +38,14 @@ function Navigation() {
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const search = useSearch();
   const settings = useSettings();
+  const router = useRouter();
 
   const documentID = pathname.split("/").pop(); // This gets the last segment
 
   const handleCreate = () => {
-    const promise = create({ title: "Untitled" });
+    const promise = create({ title: "Untitled" }).then((documentID) =>
+      router.push(`/documents/${documentID}`),
+    );
     toast.promise(promise, {
       loading: "Creating a new note",
       success: "New note created",
