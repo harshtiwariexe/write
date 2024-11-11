@@ -61,17 +61,12 @@ export default function Publish({ initData }: PublishProps) {
   };
 
   const onCopy = () => {
-    try {
-      navigator.clipboard.writeText(url);
-      setCopied(true);
+    navigator.clipboard.writeText(url);
+    setCopied(true);
 
-      setTimeout(() => {
-        setCopied(false);
-      }, 1000);
-      /* trunk-ignore(eslint/@typescript-eslint/no-unused-vars) */
-    } catch (error) {
-      toast.error("Failed to copy URL!");
-    }
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
   };
 
   return (
