@@ -1,15 +1,17 @@
 "use client";
 import Cover from "@/components/cover";
+import Editor from "@/components/editor";
 import Toolbar from "@/components/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { usePathname } from "next/navigation";
 import React from "react";
 
 export default function DocumentsIdPage() {
   const pathname = usePathname();
+  const update = useMutation(api.documents.update);
 
   // Add validation to ensure we have a valid document ID
   const documentId = pathname.split("/").pop();
@@ -20,6 +22,13 @@ export default function DocumentsIdPage() {
     api.documents.getById,
     isValidId ? { documentId: documentId as Id<"documents"> } : "skip",
   );
+
+  const onChange = (content: string) => {
+    update({
+      id: documentId as Id<"documents">,
+      content,
+    });
+  };
 
   // Handle cases where we don't have a valid document ID
   if (!isValidId) {
@@ -49,6 +58,7 @@ export default function DocumentsIdPage() {
       <Cover url={document.coverImage} initData={document} />
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
         <Toolbar initData={document} />
+        <Editor onChange={onChange} initContent={document.content} />
       </div>
     </div>
   );
