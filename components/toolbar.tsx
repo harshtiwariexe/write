@@ -4,6 +4,7 @@ import IconPicker from "@/components/icon-Picker";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import { useCoverImage } from "@/hooks/use-cover-image";
 import { useMutation } from "convex/react";
 import { ImageIcon, Smile, X } from "lucide-react";
 import React, { ElementRef, useRef, useState } from "react";
@@ -18,6 +19,7 @@ export default function Toolbar({ initData, preview }: ToolbarProps) {
   const inputRef = useRef<ElementRef<"textarea">>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initData?.title);
+  const coverImage = useCoverImage();
 
   const update = useMutation(api.documents.update);
   const removeIcon = useMutation(api.documents.removeIcon);
@@ -96,7 +98,7 @@ export default function Toolbar({ initData, preview }: ToolbarProps) {
         )}
         {!initData.coverImage && !preview && (
           <Button
-            onClick={() => {}}
+            onClick={coverImage.onOpen}
             className="text-muted-foreground text-xs"
             variant="outline"
             size="sm"
